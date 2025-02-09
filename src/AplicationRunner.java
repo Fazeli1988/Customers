@@ -1,8 +1,8 @@
-import com.mysite.customer.service.CustomerService;
+import com.mysite.customer.view.ConsoleUI;
 
 public class AplicationRunner {
     public static void main(String[] args) {
-        CustomerService customerService=new CustomerService();
-        customerService.run();
+        ConsoleUI consoleUI=new ConsoleUI();
+        consoleUI.startMenu();
     }
 }
