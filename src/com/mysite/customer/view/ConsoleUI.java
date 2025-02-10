@@ -9,8 +9,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI  implements AutoCloseable{
-    Scanner scanner=new Scanner(System.in);
-    CustomerService customerService=new CustomerService();
+    private final Scanner scanner;
+    private final CustomerService customerService;
+    public ConsoleUI() {
+        scanner = new Scanner(System.in);
+        customerService=CustomerService.getInstance();
+    }
     public void startMenu(){
         int choice;
 
@@ -33,10 +37,13 @@ public class ConsoleUI  implements AutoCloseable{
                     searchAndPrintCustomersByFamily();
                     break;
                 case 5:
-                    searchAndEditCustomersByName();
+                    editCustomerById();
                     break;
                 case 6:
-                    searchAndDeleteCustomersByName();
+                    deleteCustomerById();
+                    break;
+                case 7:
+                    printAllDeletedCustomers();
                     break;
                 case 0:
                     System.out.println("Exit!");
@@ -47,15 +54,19 @@ public class ConsoleUI  implements AutoCloseable{
         }while (choice!=0);
         scanner.close();
     }
+
+
+
     private void PrintMenu() {
         System.out.println("Menu:");
         System.out.println("0.Exit");
         System.out.println("1. Add Customer");
-        System.out.println("2. Print All Customer");
+        System.out.println("2. Print Active Customers");
         System.out.println("3. Search and print customer by name");
         System.out.println("4. Search and print customer by family");
-        System.out.println("5. Search and edit customer by name");
-        System.out.println("6. Search and delete customer by name");
+        System.out.println("5. Edit customer by id");
+        System.out.println("6. Delete customer by id");
+        System.out.println("7. Print deleted customers");
         System.out.print("Enter your choice: ");
         System.out.println();
     }
@@ -94,12 +105,24 @@ public class ConsoleUI  implements AutoCloseable{
     }
 
     private void printAllCustomers() {
-        List<Customer> allCustomers = customerService.getAllCustomers();
+        List<Customer> allCustomers = customerService.getActiveCustomers();
         if(allCustomers.isEmpty()){
             System.out.println("Customer list is empty");
         }
         else {
             System.out.println("All Customer:");
+            for (Customer customer : allCustomers) {
+                System.out.println(customer);
+            }
+        }
+    }
+    private void printAllDeletedCustomers() {
+        List<Customer> allCustomers = customerService.getDeletedCustomers();
+        if(allCustomers.isEmpty()){
+            System.out.println("There is no deleted Customers ");
+        }
+        else {
+            System.out.println("All Deleted Customers:");
             for (Customer customer : allCustomers) {
                 System.out.println(customer);
             }
@@ -115,10 +138,10 @@ public class ConsoleUI  implements AutoCloseable{
         List<Customer>customers=customerService.searchCustomersByFamily(family);
         customers.forEach(System.out::println);
     }
-    private void searchAndEditCustomersByName() {
-        String name = getUserInput("Enter name:");
-        List<Customer>customers=customerService.searchCustomersByName(name);
-        for (Customer customer : customers) {
+    private void editCustomerById() {
+        String id = getUserInput("Enter id:");
+       Customer customer=customerService.getCustomerById(Integer.valueOf(id));
+
                 System.out.println(customer);
                 String number = getUserInput("Enter number:");
                 customer.setNumber(number);
@@ -129,13 +152,12 @@ public class ConsoleUI  implements AutoCloseable{
                     String fax = getUserInput("Enter fax number:");
                     legalCustomer.setFax(fax);
                 }
-                name="";
                 System.out.println(customer);
             }
-        }
-    private void searchAndDeleteCustomersByName() {
-        String name = getUserInput("Enter Name:");
-       customerService.searchAndDeleteCustomersByName(name);
+
+    private void deleteCustomerById() {
+        String id = getUserInput("Enter Id:");
+       customerService.deleteCustomersById(Integer.valueOf(id));
     }
     }
 

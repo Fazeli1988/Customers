@@ -10,12 +10,25 @@ public abstract class Customer {
     private String name;
     private String number;
     private final CustomerType type;
-
+    private Boolean deleted;
     public Customer(String name, String number, CustomerType type) {
         this.id=ID_COUNTER.getAndIncrement();
         this.name = name;
         this.number = number;
         this.type = type;
+        this.deleted=false;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public CustomerType getType() {
