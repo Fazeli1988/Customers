@@ -13,7 +13,7 @@ public abstract class Customer {
     private Boolean deleted;
     public Customer(String name, String number, CustomerType type) {
         this.id=ID_COUNTER.getAndIncrement();
-        this.name = name;
+        this.name =capitalizeFirstCharacter(name);
         this.number = number;
         this.type = type;
         this.deleted=false;

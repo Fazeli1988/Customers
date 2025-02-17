@@ -6,7 +6,9 @@ public class LegalCustomer extends Customer {
     public String getFax() {
         return fax;
     }
-
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
     @Override
     public String toString() {
         return "BusinessContact{" +
@@ -14,9 +16,11 @@ public class LegalCustomer extends Customer {
                 ", fax='" + fax + '\'' +
                 '}';
     }
+    @Override
+    public boolean equals(Object obj){
+        return obj instanceof LegalCustomer &&
+                ((LegalCustomer) obj).getName().equals(getName()) ;
 
-    public void setFax(String fax) {
-        this.fax = fax;
     }
 
     public LegalCustomer(String name, String number){
